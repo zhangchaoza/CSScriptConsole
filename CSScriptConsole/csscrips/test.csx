@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 public class Spell
 {
 
-    public long GetValue(Guid id, int subid) => (long)id.GetHashCode() + subid.GetHashCode();
+    public long GetValue(Guid id, int subid)
+        => (long)id.GetHashCode() + subid.GetHashCode();
 
     public int GetInt() => Test2.GetIit();
 
