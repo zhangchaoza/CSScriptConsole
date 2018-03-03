@@ -22,7 +22,8 @@ namespace ConsoleApp1
                     // Console.WriteLine("Your file:");
                     // var code = Console.ReadLine();
                     // var r = RunAsync(string.IsNullOrEmpty(code) ? null : code).Result;
-                    var r = RunFileAsync().Result;
+                    // var r = RunFileAsync().Result;
+                    var r = RunScriptUpdate();
                     Console.WriteLine($"耗时:{r}");
                 }
                 else if ("N" == iscontinue.ToUpper())
@@ -82,10 +83,85 @@ namespace ConsoleApp1
                 String code = "#load \"main.csx\"";
                 var script = CSharpScript.Create(code, options: option);
                 script.Compile();
-                var state = await script.RunAsync(null);
+                var state = await script.RunAsync();
                 // var state = await CSharpScript.RunAsync(code, options: option);
 
                 #endregion
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"{ex.Message}{Environment.NewLine}{ex.StackTrace}");
+            }
+            finally
+            {
+                stopwatch.Stop();
+            }
+            return stopwatch.Elapsed;
+        }
+
+        private static TimeSpan RunMutiThread()
+        {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            try
+            {
+                var po = new ParallelOptions
+                {
+                    MaxDegreeOfParallelism = Environment.ProcessorCount
+                };
+                var option = ScriptOptions.Default
+                        .WithFilePath(Path.Combine(scrippath, "main.csx"))
+                        .WithFileEncoding(Encoding.UTF8);
+                String code = "#load \"main.csx\"";
+                // String code = @"
+                // using System;
+                // var a=1;
+                // if(a==1)
+                // {
+                //     a=2;
+                //     Console.WriteLine(0);
+                // }
+                // else
+                // {
+                //     Console.WriteLine(1);
+                // }
+                // ";
+                var script = CSharpScript.Create(code, options: option);
+                script.Compile();
+
+                Parallel.For(0, 500000, po, i =>
+                // for (int i = 0; i < 1000; i++)
+                {
+                    var state = script.RunAsync(null).Result;
+                }
+                )
+                ;
+            }
+            finally
+            {
+                stopwatch.Stop();
+            }
+            return stopwatch.Elapsed;
+        }
+
+        static Script scriptForRunScriptUpdate;
+
+        private static TimeSpan RunScriptUpdate()
+        {
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
+            try
+            {
+                if (null == scriptForRunScriptUpdate)
+                {
+                    var option = ScriptOptions.Default
+                            .WithFilePath(Path.Combine(scrippath, "main.csx"))
+                            .WithFileEncoding(Encoding.UTF8);
+                    String code = "#load \"main.csx\"";
+                    scriptForRunScriptUpdate = CSharpScript.Create(code, options: option);
+                }
+                scriptForRunScriptUpdate.Compile();
+                var state = scriptForRunScriptUpdate.RunAsync(null).Result;
             }
             catch (Exception ex)
             {

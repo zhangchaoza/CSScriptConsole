@@ -14,5 +14,7 @@ public static class Test2
     }
 
     private static Task SomeJob()
-        => Task.Run(() => Console.WriteLine("Do something async."));
+        => Task.Run(() => Task.CompletedTask
+        // Console.WriteLine("Do something async.")
+        );
 }
