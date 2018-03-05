@@ -6,11 +6,11 @@ using Microsoft.CodeAnalysis.Scripting;
 using System.IO;
 using System.Text;
 
-namespace ConsoleApp1
+namespace CSScriptConsole
 {
     class Program
     {
-        static string scrippath = Path.Combine(AppContext.BaseDirectory, "csscrips");
+        static string scrippath = Path.Combine(@"D:\code\GitHub\CSScriptConsole", "csscrips");
         static void Main(string[] args)
         {
             while (true)
@@ -157,7 +157,9 @@ namespace ConsoleApp1
                     var option = ScriptOptions.Default
                             .WithFilePath(Path.Combine(scrippath, "main.csx"))
                             .WithFileEncoding(Encoding.UTF8);
-                    String code = "#load \"main.csx\"";
+                    String code = @"
+                    #load ""main.csx""
+                    ";
                     scriptForRunScriptUpdate = CSharpScript.Create(code, options: option);
                 }
                 scriptForRunScriptUpdate.Compile();
@@ -172,6 +174,22 @@ namespace ConsoleApp1
                 stopwatch.Stop();
             }
             return stopwatch.Elapsed;
+        }
+    }
+
+    public class Person
+    {
+        public Person(string name, int age)
+        {
+            this.Name = name;
+            this.Age = age;
+        }
+        public string Name { get; set; }
+        public int Age { get; set; }
+
+        public override string ToString()
+        {
+            return $"{Name}:{Age}";
         }
     }
 }
