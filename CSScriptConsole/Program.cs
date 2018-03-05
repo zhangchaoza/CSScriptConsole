@@ -12,7 +12,7 @@ namespace CSScriptConsole
 {
     class Program
     {
-        static string scriptrootpath = Path.Combine(@"D:\code\GitHub\CSScriptConsole", "csscrips");
+        static string scriptrootpath = Path.Combine(@"D:\code\GitHub\CSScriptConsole", "csscripts");
         static string scrippath = Path.Combine(scriptrootpath, "SomeSimpleSample");
         static void Main(string[] args)
         {
