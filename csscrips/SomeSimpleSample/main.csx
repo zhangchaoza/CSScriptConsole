@@ -1,5 +1,6 @@
 #load "test.csx"
-#r "..\CSScriptConsole\bin\Debug\netcoreapp2.0\CSScriptConsole.dll"
+#load "test3.csx"
+#r "..\..\CSScriptConsole\bin\Debug\netcoreapp2.0\CSScriptConsole.dll"
 
 using System;
 using CSScriptConsole;
