@@ -12,10 +12,12 @@ namespace CSScriptConsole
 {
     class Program
     {
-        static string scriptrootpath = Path.Combine(@"D:\code\GitHub\CSScriptConsole", "csscripts");
-        static string scrippath = Path.Combine(scriptrootpath, "SomeSimpleSample");
+        static string scriptrootpath;
+        static string scrippath;
         static void Main(string[] args)
         {
+            Program.scriptrootpath = Path.Combine(Path.GetFullPath(".."), "csscripts");
+            Program.scrippath = Path.Combine(scriptrootpath, "SomeSimpleSample");
             while (true)
             {
                 Console.WriteLine("Is continue? [Y]es/[N]o");
